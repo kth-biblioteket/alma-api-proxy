@@ -157,7 +157,7 @@ appRoutes.delete("/", async function (req, res, next) {
     }
 });
 
-app.use(process.env.API_ROUTES_PATH, apiRoutes);
+app.use(process.env.API_ROUTES_PATH, appRoutes);
 
 const server = app.listen(process.env.PORT || 3002, function () {
     const port = server.address().port;
