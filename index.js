@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(cors({ 
-    origin: ['https://exlibrisgroup.com', 'http://localhost']
+    origin: ['https://exlibrisgroup.com', 'http://localhost:8003']
 }));
 
 const appRoutes = express.Router();
