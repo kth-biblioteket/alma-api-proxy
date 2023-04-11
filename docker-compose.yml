@@ -1,7 +1,7 @@
 version: '3.6'
 
 services:
-  ldap-api:
+  alma-api-proxy:
     container_name: alma-api-proxy
     image: ghcr.io/kth-biblioteket/alma-api-proxy:${REPO_TYPE}
     restart: always
