@@ -86,13 +86,29 @@ appRoutes.post("/activatepatron", async function (req, res, next) {
                     patronrole = true
                     break;
                 } else {
-                    result = "User does not have a patron role!";
+                    res.status(400)
+                    res.json("User does not have a patron role!");
                 }
             }
-            if(patronrole) {
-                //Uppdatera alma
-                const almaresult = await axios.put(almapiurl, almauser.data)
+            //Uppdatera pincode
+            if(req.body.pin_number) {
+                almauser.data.pin_number = req.body.pin_number
+            } else {
+                res.status(400)
+                res.json("Error, No pincode provided")
             }
+
+            //Uppdatera preferred language
+            if(req.body.language_value && req.body.language_desc) {
+                almauser.data.preferred_language.value = req.body.language_value
+                almauser.data.preferred_language.desc = req.body.language_desc
+            } else {
+                res.status(400)
+                res.json("Error, No preferred language provided")
+            }
+            
+            const almaresult = await axios.put(almapiurl, almauser.data)
+            
             res.json("success");
         } catch(err) {
             res.status(400)
