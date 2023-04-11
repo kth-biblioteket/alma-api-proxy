@@ -1,0 +1,23 @@
+version: '3.6'
+
+services:
+  ldap-api:
+    container_name: alma-api-proxy
+    image: ghcr.io/kth-biblioteket/alma-api-proxy:${REPO_TYPE}
+    restart: always
+    env_file:
+      - ./alma-api-proxy.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.alma-api-proxy.rule=Host(`${DOMAIN_NAME}`) && PathPrefix(`${PATHPREFIX}`)"
+      - "traefik.http.routers.alma-api-proxy.middlewares=alma-api-proxy-stripprefix"
+      - "traefik.http.middlewares.alma-api-proxy-stripprefix.stripprefix.prefixes=${PATHPREFIX}"
+      - "traefik.http.routers.alma-api-proxy.entrypoints=websecure"
+      - "traefik.http.routers.alma-api-proxy.tls=true"
+      - "traefik.http.routers.alma-api-proxy.tls.certresolver=myresolver"
+    networks:
+      - "apps-net"
+
+networks:
+  apps-net:
+    external: true
