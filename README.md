@@ -1,5 +1,7 @@
 # KTHB Proxy mot Almas API
 
+Används främst för att göra Alma-api anrop från Primo när det finns en inloggad användare
+
 ##
 
 ###
