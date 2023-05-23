@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(cors({ 
-    origin: ['https://exlibrisgroup.com', 'http://localhost:8003']
+    origin: ['https://kth-ch-psb.primo.exlibrisgroup.com', 'https://kth-ch.primo.exlibrisgroup.com', 'https://exlibrisgroup.com', 'http://localhost:8003']
 }));
 
 const appRoutes = express.Router();
