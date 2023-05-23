@@ -117,7 +117,7 @@ appRoutes.post("/activatepatron", async function (req, res, next) {
                 return;
             }
             
-            //const almaresult = await axios.put(almapiurl, almauser.data)
+            const almaresult = await axios.put(almapiurl, almauser.data)
             
             res.json("success");
         } catch(err) {
