@@ -59,7 +59,13 @@ appRoutes.get("/", async function (req, res, next) {
 })
 
 appRoutes.post("/activatepatron", async function (req, res, next) {
-    decodedtoken = verifytoken(req.query.jwt)
+    let decodedtoken
+    try {
+        decodedtoken = await verifytoken(req.query.jwt)
+    } catch(err) {
+        console.log(err)
+    }
+
     if (decodedtoken!=0) {
         try {
             //hämta user objekt
@@ -111,7 +117,7 @@ appRoutes.post("/activatepatron", async function (req, res, next) {
                 return;
             }
             
-            const almaresult = await axios.put(almapiurl, almauser.data)
+            //const almaresult = await axios.put(almapiurl, almauser.data)
             
             res.json("success");
         } catch(err) {
@@ -186,25 +192,13 @@ const server = app.listen(process.env.PORT || 3002, function () {
     console.log("App now running on port", port);
 });
 
-function verifytoken(tokenValue) {
-    //public key: https://api-eu.hosted.exlibrisgroup.com/auth/46KTH_INST/jwks.json
-    //public key: https://api-eu.hosted.exlibrisgroup.com/auth/46KTH_INST/jwks.json?env=sandbox
-    var keys = {
-        kty: "EC",
-        kid: "primaPrivateKey-46KTH_INST",
-        use: "sig",
-        x: process.env.EXLIBRISPUBLICKEY_X,
-        y: process.env.EXLIBRISPUBLICKEY_Y,
-        crv: "P-256",
-        alg: "ES256"
-    }
-
-    var pem = jwkToPem(keys);
-
+async function verifytoken(tokenValue) {
     try {
+        const exlibrisjwks = await axios.get(process.env.EXLIBRISPUBLICKEY_URL)
+        var pem = jwkToPem(exlibrisjwks.data.keys[1]);
         var token = jwt.verify( tokenValue, pem )
         return token
-    } catch (err) {
+    } catch {
         return 0
     }
 

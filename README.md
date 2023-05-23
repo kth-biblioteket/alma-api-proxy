@@ -47,6 +47,8 @@ DOMAIN_NAME=api-ref.lib.kth.se
 REPO_TYPE=ref
 ```
 4.  Skapa och anpassa alma-api-proxy.env (för applikationen) i foldern
+public key: https://api-eu.hosted.exlibrisgroup.com/auth/46KTH_INST/jwks.json
+public key: https://api-eu.hosted.exlibrisgroup.com/auth/46KTH_INST/jwks.json?env=sandbox
 ```
 ALMAPIENDPOINT=https://api-eu.hosted.exlibrisgroup.com/almaws/v1/
 ALMAAPIKEY=xxxxxxxxxxxxxxxx
