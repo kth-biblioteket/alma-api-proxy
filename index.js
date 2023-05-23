@@ -1,4 +1,5 @@
 
+//require('dotenv').config({ path: 'alma-api-proxy.env'})
 require('dotenv').config({ path: 'alma-api-proxy.env'})
 const jwt = require('jsonwebtoken');
 const jwkToPem = require('jwk-to-pem');
@@ -63,7 +64,6 @@ appRoutes.post("/activatepatron", async function (req, res, next) {
         try {
             //hämta user objekt
             almapiurl = process.env.ALMAPIENDPOINT + 'users/' + decodedtoken.userName + '?apikey=' + process.env.ALMAAPIKEY
-            console.log(almapiurl)
             const almauser = await axios.get(almapiurl)
             
             //Lägg till user note i hämtat userobjekt
@@ -85,10 +85,12 @@ appRoutes.post("/activatepatron", async function (req, res, next) {
                     result = "OK"
                     patronrole = true
                     break;
-                } else {
-                    res.status(400)
-                    res.json("User does not have a patron role!");
                 }
+            }
+            if(!patronrole) {
+                res.status(400)
+                res.json("User does not have a patron role!");
+                return;
             }
             //Uppdatera pincode
             if(req.body.pin_number) {
@@ -96,6 +98,7 @@ appRoutes.post("/activatepatron", async function (req, res, next) {
             } else {
                 res.status(400)
                 res.json("Error, No pincode provided")
+                return;
             }
 
             //Uppdatera preferred language
@@ -105,6 +108,7 @@ appRoutes.post("/activatepatron", async function (req, res, next) {
             } else {
                 res.status(400)
                 res.json("Error, No preferred language provided")
+                return;
             }
             
             const almaresult = await axios.put(almapiurl, almauser.data)
